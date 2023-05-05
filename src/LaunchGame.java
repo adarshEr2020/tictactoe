@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 class TicTacToe {
 	static char[][] board;
@@ -65,54 +64,40 @@ class TicTacToe {
 			return false;
 		}
 	}
-}
 
-class HumanPlayer {
-	String name;
-	char mark;
-
-	HumanPlayer(String name, char mark) {
-		this.name = name;
-		this.mark = mark;
-	}
-
-	void makeMove() {
-		Scanner scan = new Scanner(System.in);
-		int row, col;
-		do {
-			System.out.println("Enter the row and col");
-			row = scan.nextInt();
-			col = scan.nextInt();
-		} while (!isValidMove(row, col));
-		TicTacToe.placeMark(row, col, mark);
-	}
-
-	boolean isValidMove(int row, int col) {
-		if (row >= 0 && row <= 2 && col >= 0 && col <= 2) {
-			if (TicTacToe.board[row][col] == ' ') {
-				return true;
+	static boolean checkDraw() {
+		for (int i = 0; i <= 2; i++) {
+			for (int j = 0; j <= 2; j++) {
+				if (board[i][j] == ' ') {
+					return false;
+				}
 			}
 		}
-		return false;
+		return true;
 	}
 }
 
 public class LaunchGame {
 	public static void main(String[] args) {
 		TicTacToe t = new TicTacToe();
+		System.out.println("|----Welcome to TicTacToe game----| ");
 		HumanPlayer p1 = new HumanPlayer("Bob", 'X');
-		HumanPlayer p2 = new HumanPlayer("Priya", 'O');
+		AIPlayer p2 = new AIPlayer("TAI", 'O');
 
-		HumanPlayer cp;
+		Player cp;
 		cp = p1;
 		while (true) {
-			System.out.println(cp.name + " tern");
+			System.out.println(cp.name + "> tern");
 			cp.makeMove();
 			TicTacToe.displayBoard();
 			if (TicTacToe.checkColWin() || TicTacToe.checkRowWin() || TicTacToe.checkDiagWin()) {
-				System.out.println(cp.name + " has won");
+				System.out.println(cp.name + "** has won!");
+				break;
+			} else if (TicTacToe.checkDraw()) {
+				System.out.println("Game is Draw");
 				break;
 			} else {
+
 				if (cp == p1) {
 					cp = p2;
 				} else {
